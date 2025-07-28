@@ -9,10 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        
-      - name: Inject environment variables
+      
+      - name: Inject configuration
         run: |
-          # Create config.js with secrets
           cat > public/assets/config.js <<EOF
           window.gameConfig = {
             PEER_HOST: "${{ secrets.PEER_HOST }}",
@@ -22,11 +21,9 @@ jobs:
           };
           EOF
           
-          # Replace placeholders in HTML (optional)
-          sed -i "s|<!--CONFIG-->|<script src='assets/config.js'></script>|g" public/index.html
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          keep_files: true
