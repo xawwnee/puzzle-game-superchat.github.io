@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        
+      - name: Inject environment variables
+        run: |
+          # Create config.js with secrets
+          cat > public/assets/config.js <<EOF
+          window.gameConfig = {
+            PEER_HOST: "${{ secrets.PEER_HOST }}",
+            PEER_PORT: "${{ secrets.PEER_PORT }}",
+            PEER_PATH: "${{ secrets.PEER_PATH }}",
+            YOUTUBE_API_KEY: "${{ secrets.YOUTUBE_API_KEY }}"
+          };
+          EOF
+          
+          # Replace placeholders in HTML (optional)
+          sed -i "s|<!--CONFIG-->|<script src='assets/config.js'></script>|g" public/index.html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
