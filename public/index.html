@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube SuperChat Puzzle Game</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+</head>
+<body>
+  <div id="wrapper">
+    <h1>Puzzle Challenge</h1>
+    <div class="puzzle" id="puzzle"></div>
+    <div class="leaderboard">
+      <h3>📊 Leaderboard</h3>
+      <ul id="log"></ul>
+    </div>
+    <div id="connectionStatus" class="connection-status">Connecting...</div>
+  </div>
+
+  <audio id="successSound" src="assets/sounds/success.mp3"></audio>
+  <audio id="errorSound" src="assets/sounds/error.mp3"></audio>
+  <audio id="winSound" src="assets/sounds/win.mp3"></audio>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/game.js"></script>
+</body>
+</html>
