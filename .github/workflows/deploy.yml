@@ -9,18 +9,19 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Replace WS_URL in HTML
+      - name: Replace __WS_URL__ with Vercel WebSocket URL
         run: |
-          sed -i 's#__WS_URL__#${{ secrets.WS_URL }}#g' index.html
+          WS_URL="wss://puzzle-game-superchat-backend.vercel.app"
+          sed -i "s|__WS_URL__|$WS_URL|g" index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: ./
