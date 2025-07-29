@@ -145,12 +145,12 @@
         playSound('win');
         showNotification(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
         addToLog(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
-      } else if (message.type === 'valid) {
+      } else if (message.type === 'valid') {
         const { name, amount } = msg.data;
         playSound('success');
         addToLog(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
         showNotification(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
-      } else if (message.type === 'invalid) {
+      } else if (message.type === 'invalid') {
         const { name, amount } = msg.data;
         playSound('error');
         addToLog(`❌ ${name} sent ₹${amount}`, '#F44336');
