@@ -145,7 +145,18 @@
         playSound('win');
         showNotification(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
         addToLog(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
-      }
+      } else if (message.type === 'valid) {
+        const { name, amount } = msg.data;
+        playSound('success');
+        addToLog(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
+        showNotification(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
+      } else if (message.type === 'invalid) {
+        const { name, amount } = msg.data;
+        playSound('error');
+        addToLog(`❌ ${name} sent ₹${amount}`, '#F44336');
+        showNotification(`❌ ${name} sent ₹${amount}`, '#F44336');
+        showHint();
+    }
     };
 
     function updateConnectionStatus(isConnected, message) {
@@ -183,6 +194,23 @@
       });
     }
 
+    function flipCurrentBlock() {
+      if (currentBlock > 0) {
+        const blockToFlip = puzzleEl.children[currentBlock - 1];
+        blockToFlip.classList.add('flipped');
+      }
+    }
+    
+    function showHint() {
+      if (currentBlock < blocks.length) {
+        const nextBlock = puzzleEl.children[currentBlock];
+        nextBlock.classList.add('hint');
+        setTimeout(() => {
+          nextBlock.classList.remove('hint');
+        }, 1000);
+      }
+    }
+    
     function showNotification(msg, color) {
       const note = document.createElement('div');
       note.className = 'notification';
