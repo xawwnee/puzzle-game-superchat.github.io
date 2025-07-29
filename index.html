@@ -155,7 +155,6 @@
         playSound('error');
         addToLog(`❌ ${name} sent ₹${amount}`, '#F44336');
         showNotification(`❌ ${name} sent ₹${amount}`, '#F44336');
-        showHint();
     }
     };
 
@@ -192,23 +191,6 @@
         wrapper.appendChild(inner);
         puzzleEl.appendChild(wrapper);
       });
-    }
-
-    function flipCurrentBlock() {
-      if (currentBlock > 0) {
-        const blockToFlip = puzzleEl.children[currentBlock - 1];
-        blockToFlip.classList.add('flipped');
-      }
-    }
-    
-    function showHint() {
-      if (currentBlock < blocks.length) {
-        const nextBlock = puzzleEl.children[currentBlock];
-        nextBlock.classList.add('hint');
-        setTimeout(() => {
-          nextBlock.classList.remove('hint');
-        }, 1000);
-      }
     }
     
     function showNotification(msg, color) {
