@@ -133,17 +133,7 @@
     const puzzleEl = document.getElementById('puzzle');
     const logEl = document.getElementById('log');
     const connectionStatusEl = document.getElementById('connectionStatus');
-
-    const wss = new WebSocketServer({ server });
-    wss.on('connection', (ws) => {
-      // Send current state immediately
-      ws.send(JSON.stringify({
-        type: 'update',
-        data: { ...gameState, logs }
-      }));
-    });
-
-    
+   
     const ws = new WebSocket(config.WS_URL);
     ws.onopen = () => updateConnectionStatus(true, "🟢 Connected");
     ws.onmessage = (event) => {
