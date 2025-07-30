@@ -198,20 +198,14 @@
     }
 
     let previousBlock = 0;
-
     function updateGame(state) {
       previousBlock = currentBlock;
       currentBlock = state.currentBlock;
-    
-      // Flip only the newly unlocked block
-      if (currentBlock > previousBlock) {
-        const justUnlocked = puzzleEl.children[previousBlock];
-        if (justUnlocked) justUnlocked.classList.add('flipped');
-      }
-    
-      // Reset puzzle if new game starts
-      if (currentBlock === 0 && previousBlock !== 0) {
-        renderPuzzle();
+      renderPuzzle(); // redraw all blocks
+      // Flip all blocks up to currentBlock
+      for (let i = 0; i < currentBlock; i++) {
+        const block = puzzleEl.children[i];
+        if (block) block.classList.add('flipped');
       }
     }
 
@@ -219,7 +213,7 @@
       puzzleEl.innerHTML = '';
       blocks.forEach((val) => {
         const wrapper = document.createElement('div');
-        wrapper.className = 'block';
+        wrapper.className = 'block'; // no "flipped" class here
     
         const inner = document.createElement('div');
         inner.className = 'block-inner';
