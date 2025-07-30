@@ -133,14 +133,24 @@
     const puzzleEl = document.getElementById('puzzle');
     const logEl = document.getElementById('log');
     const connectionStatusEl = document.getElementById('connectionStatus');
-   
+
+    function restoreLogs(logItems) {
+      logEl.innerHTML = '';
+      logItems.forEach(log => {
+        const li = document.createElement('li');
+        li.textContent = log.text;
+        li.style.color = log.color;
+        logEl.appendChild(li);
+      });
+    }
+    
     const ws = new WebSocket(config.WS_URL);
     ws.onopen = () => updateConnectionStatus(true, "🟢 Connected");
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
       if (msg.type === 'update') {
         updateGame(msg.data);
-        //if (msg.data.logs) restoreLogs(msg.data.logs);
+        if (msg.data.logs) restoreLogs(msg.data.logs);
       }
       if (msg.type === 'valid') {
         const { name, amount } = msg.data;
@@ -240,16 +250,6 @@
       if (logEl.children.length > 5) {
         logEl.removeChild(logEl.lastChild);
       }
-    }
-
-    function restoreLogs(logItems) {
-      logEl.innerHTML = '';
-      logItems.forEach(log => {
-        const li = document.createElement('li');
-        li.textContent = log.text;
-        li.style.color = log.color;
-        logEl.appendChild(li);
-      });
     }
 
     function playSound(type) {
