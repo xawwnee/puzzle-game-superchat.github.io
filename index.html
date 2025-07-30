@@ -143,14 +143,14 @@
       if (msg.type === 'valid') {
         const { name, amount } = msg.data;
         playSound('success');
+        showNotification(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');        
         addToLog(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
-        showNotification(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
       } 
       if (msg.type === 'invalid') {
         const { name, amount } = msg.data;
         playSound('error');
+        showNotification(`❌ ${name} sent ₹${amount}`, '#F44336');        
         addToLog(`❌ ${name} sent ₹${amount}`, '#F44336');
-        showNotification(`❌ ${name} sent ₹${amount}`, '#F44336');
     }
       if (msg.type === 'celebration') {
         const { name, amount } = msg.data;
