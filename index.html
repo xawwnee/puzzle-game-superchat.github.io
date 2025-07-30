@@ -147,13 +147,13 @@
         showNotification(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
         addToLog(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
       } 
-      if (message.type === 'valid') {
+      if (msg.type === 'valid') {
         const { name, amount } = msg.data;
         playSound('success');
         addToLog(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
         showNotification(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
       } 
-      if (message.type === 'invalid') {
+      if (msg.type === 'invalid') {
         const { name, amount } = msg.data;
         playSound('error');
         addToLog(`❌ ${name} sent ₹${amount}`, '#F44336');
