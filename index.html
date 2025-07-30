@@ -143,20 +143,28 @@
       if (msg.type === 'valid') {
         const { name, amount } = msg.data;
         playSound('success');
-        showNotification(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');        
+        showNotification(`${name} unlocked ₹${amount}`, '#4CAF50');        
         addToLog(`✅ ${name} unlocked ₹${amount}`, '#4CAF50');
-      } 
+      }
       if (msg.type === 'invalid') {
         const { name, amount } = msg.data;
         playSound('error');
-        showNotification(`❌ ${name} sent ₹${amount}`, '#F44336');        
+        showNotification(`${name} sent ₹${amount}`, '#F44336');
         addToLog(`❌ ${name} sent ₹${amount}`, '#F44336');
-    }
+        // Apply .hint to the next block
+        const hintBlock = puzzleEl.children[currentBlock];
+        if (hintBlock) {
+          hintBlock.classList.add('hint');
+          setTimeout(() => {
+            hintBlock.classList.remove('hint');
+          }, 600);
+        }
+      }
       if (msg.type === 'celebration') {
         const { name, amount } = msg.data;
         launchConfetti();
         playSound('win');
-        showNotification(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
+        showNotification(`${name} won ₹${amount * 2}`, '#4CAF50');
         addToLog(`🎉 ${name} won ₹${amount * 2}`, '#4CAF50');
       }
       if (msg.type === 'reset') {
@@ -165,7 +173,7 @@
         const log = document.getElementById('log');
         if (log) log.innerHTML = '';
         // Show notification and log message
-        showNotification('🔄 Game finished. Ready for a new round!', '#2196F3'); 
+        showNotification('Game finished. Ready for a new round!', '#2196F3'); 
         addToLog('🔄 Game finished. Ready for a new round!', '#2196F3'); 
       }
     };
