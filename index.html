@@ -88,7 +88,7 @@
     }
     #log {
       list-style: none; padding: 0; margin: 0; text-align: left;
-      max-height: 180px; overflow-y: auto;
+      max-height: 200px; overflow-y: hidden;
     }
     #log li { padding: 5px 0; border-bottom: 1px solid #333; }
     .connection-status {
@@ -198,14 +198,20 @@
     }
 
     let previousBlock = 0;
+
     function updateGame(state) {
       previousBlock = currentBlock;
       currentBlock = state.currentBlock;
-      renderPuzzle();
-      // Flip all unlocked blocks
-      for (let i = 0; i < currentBlock; i++) {
-        const block = puzzleEl.children[i];
-        if (block) block.classList.add('flipped');
+    
+      // Flip only the newly unlocked block
+      if (currentBlock > previousBlock) {
+        const justUnlocked = puzzleEl.children[previousBlock];
+        if (justUnlocked) justUnlocked.classList.add('flipped');
+      }
+    
+      // Reset puzzle if new game starts
+      if (currentBlock === 0 && previousBlock !== 0) {
+        renderPuzzle();
       }
     }
 
