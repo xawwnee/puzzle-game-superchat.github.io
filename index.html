@@ -139,6 +139,9 @@
       const msg = JSON.parse(event.data);
       if (msg.type === 'update') {
         updateGame(msg.data);
+          if (msg.data.logs) {
+            restoreLogs(msg.data.logs);
+          }
       }
       if (msg.type === 'valid') {
         const { name, amount } = msg.data;
@@ -188,40 +191,36 @@
       previousBlock = currentBlock;
       currentBlock = state.currentBlock;
       renderPuzzle();
+      // Flip all unlocked blocks
+      for (let i = 0; i < currentBlock; i++) {
+        const block = puzzleEl.children[i];
+        if (block) block.classList.add('flipped');
+      }
     }
 
     function renderPuzzle() {
-      const allBlocks = puzzleEl.children;
+      puzzleEl.innerHTML = '';
+      blocks.forEach((val) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'block';
     
-      if (currentBlock > previousBlock) {
-        // Newly unlocked block only
-        const wrapper = allBlocks[previousBlock];
-        if (wrapper) wrapper.classList.add('flipped');
-      } else if (currentBlock === 0 && previousBlock !== 0) {
-        // Reset all
-        puzzleEl.innerHTML = '';
-        blocks.forEach((val) => {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'block';
-          const inner = document.createElement('div');
-          inner.className = 'block-inner';
+        const inner = document.createElement('div');
+        inner.className = 'block-inner';
     
-          const front = document.createElement('div');
-          front.className = 'block-front';
-          front.textContent = '₹' + val;
+        const front = document.createElement('div');
+        front.className = 'block-front';
+        front.textContent = '₹' + val;
     
-          const back = document.createElement('div');
-          back.className = 'block-back';
-          back.textContent = '₹' + val;
+        const back = document.createElement('div');
+        back.className = 'block-back';
+        back.textContent = '₹' + val;
     
-          inner.appendChild(front);
-          inner.appendChild(back);
-          wrapper.appendChild(inner);
-          puzzleEl.appendChild(wrapper);
-        });
-      }
-}
-
+        inner.appendChild(front);
+        inner.appendChild(back);
+        wrapper.appendChild(inner);
+        puzzleEl.appendChild(wrapper);
+      });
+    }
     
     function showNotification(msg, color) {
       const note = document.createElement('div');
@@ -240,6 +239,16 @@
       if (logEl.children.length > 5) {
         logEl.removeChild(logEl.lastChild);
       }
+    }
+
+    function restoreLogs(logItems) {
+      logEl.innerHTML = '';
+      logItems.forEach(log => {
+        const li = document.createElement('li');
+        li.textContent = log.text;
+        li.style.color = log.color;
+        logEl.appendChild(li);
+      });
     }
 
     function playSound(type) {
