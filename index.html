@@ -137,10 +137,11 @@
     const ws = new WebSocket(config.WS_URL);
     ws.onopen = () => updateConnectionStatus(true, "🟢 Connected");
     ws.onmessage = (event) => {
+      if (msg.data.logs) restoreLogs(msg.data.logs);
       const msg = JSON.parse(event.data);
       if (msg.type === 'update') {
         updateGame(msg.data);
-        if (msg.data.logs) restoreLogs(msg.data.logs);
+        //if (msg.data.logs) restoreLogs(msg.data.logs);
       }
       if (msg.type === 'valid') {
         const { name, amount } = msg.data;
