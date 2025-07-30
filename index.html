@@ -175,35 +175,45 @@
       connectionStatusEl.classList.toggle('connected', isConnected);
     }
 
+    let previousBlock = 0;
     function updateGame(state) {
+      previousBlock = currentBlock;
       currentBlock = state.currentBlock;
       renderPuzzle();
     }
 
     function renderPuzzle() {
-      puzzleEl.innerHTML = '';
-      blocks.forEach((val, i) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'block';
-        if (i < currentBlock) wrapper.classList.add('flipped');
+      const allBlocks = puzzleEl.children;
+    
+      if (currentBlock > previousBlock) {
+        // Newly unlocked block only
+        const wrapper = allBlocks[previousBlock];
+        if (wrapper) wrapper.classList.add('flipped');
+      } else if (currentBlock === 0 && previousBlock !== 0) {
+        // Reset all
+        puzzleEl.innerHTML = '';
+        blocks.forEach((val) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'block';
+          const inner = document.createElement('div');
+          inner.className = 'block-inner';
+    
+          const front = document.createElement('div');
+          front.className = 'block-front';
+          front.textContent = '₹' + val;
+    
+          const back = document.createElement('div');
+          back.className = 'block-back';
+          back.textContent = '₹' + val;
+    
+          inner.appendChild(front);
+          inner.appendChild(back);
+          wrapper.appendChild(inner);
+          puzzleEl.appendChild(wrapper);
+        });
+      }
+}
 
-        const inner = document.createElement('div');
-        inner.className = 'block-inner';
-
-        const front = document.createElement('div');
-        front.className = 'block-front';
-        front.textContent = '₹' + val;
-
-        const back = document.createElement('div');
-        back.className = 'block-back';
-        back.textContent = '₹' + val;
-
-        inner.appendChild(front);
-        inner.appendChild(back);
-        wrapper.appendChild(inner);
-        puzzleEl.appendChild(wrapper);
-      });
-    }
     
     function showNotification(msg, color) {
       const note = document.createElement('div');
